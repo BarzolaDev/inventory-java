@@ -35,7 +35,7 @@ class ProductConcurrencyTest {
         Product product = new Product(null, "test", 10, BigDecimal.ONE, BigDecimal.TEN, "kg");
         Product saved = productRepository.save(product);
 
-        int threads = 10;
+        int threads = 1000;
         CountDownLatch latch = new CountDownLatch(threads);
         ExecutorService executor = Executors.newFixedThreadPool(threads);
 

@@ -14,7 +14,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    @Transactional
+    @Transactional(timeout = 3)
     public Product updateStock(Long id, Integer quantity) {
         Product product = productRepository.findByIdWithLock(id)
                 .orElseThrow(()-> new ProductNotFoundException("Product not found"));
