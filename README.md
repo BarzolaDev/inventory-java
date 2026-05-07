@@ -11,3 +11,7 @@ enfocada en concurrencia y protección del lock en producción.
 
 ## Stack
 Spring Boot · JPA · PostgreSQL · Testcontainers · Lombok · GitHub Actions
+
+## Setup WSL2
+Requiere `src/test/resources/docker-java.properties` con `api.version=1.44`
+por incompatibilidad entre Docker 29 y Testcontainers < 2.0.
