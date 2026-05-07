@@ -1,4 +1,4 @@
-# Inventory Java
+# Inventory Java — Concurrency & Security by Design
 Replicación de la API de inventario en Java/Spring Boot, 
 enfocada en concurrencia y protección del lock en producción.
 
