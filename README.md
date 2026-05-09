@@ -1,17 +1,25 @@
 # Inventory Java — Concurrency & Security by Design
-Replicación de la API de inventario en Java/Spring Boot, 
-enfocada en concurrencia y protección del lock en producción.
+
+Inventory API replica in Java/Spring Boot, focused on concurrency.
 
 ## Core
-- Lock pesimista con `SELECT FOR UPDATE` para prevenir race conditions
-- Lock protegido con `nowait` y `timeout` para evitar bloqueos indefinidos
-- Test de concurrencia con Testcontainers + PostgreSQL real
-- 1000 threads simultáneos, stock consistente garantizado
-- CI via GitHub Actions en cada push
+- Pessimistic lock with `SELECT FOR UPDATE` to prevent race conditions
+- Concurrency tests with Testcontainers + real PostgreSQL
+- CI via GitHub Actions on every push
+
+## Concurrency Tests
+
+### Missile 1 — Race condition demonstrated
+- Initial stock: 10, 11 threads subtracting 1 simultaneously
+- Without lock, stock ended at **9** instead of **-1**
+- Race condition demonstrated ✅
+
+### Why H2 and not PostgreSQL
+PostgreSQL has implicit protections that hide race conditions in tests.
+H2 has no such protections — perfect for demonstrating the failure.
+
+### Next
+- Implement SELECT FOR UPDATE with Testcontainers + real PostgreSQL
 
 ## Stack
-Spring Boot · JPA · PostgreSQL · Testcontainers · Lombok · GitHub Actions
-
-## Setup WSL2
-Requiere `src/test/resources/docker-java.properties` con `api.version=1.44`
-por incompatibilidad entre Docker 29 y Testcontainers < 2.0.
+Spring Boot · JPA · PostgreSQL · H2 · Testcontainers · Lombok · GitHub Actions
