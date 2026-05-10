@@ -39,7 +39,7 @@ class ProductConcurrencyTest {
         CountDownLatch latch = new CountDownLatch(threads);
         ExecutorService executor = Executors.newFixedThreadPool(threads);
 
-        // Act - 10 usuarios simultáneos
+        // Act - 2 usuarios simultáneos
         for (int i = 0; i < threads; i++) {
             executor.submit(() -> {
                 try {
@@ -55,6 +55,6 @@ class ProductConcurrencyTest {
 
         // Assert
         Product result = productRepository.findById(saved.getId()).orElseThrow();
-        assertThat(result.getStock()).isEqualTo(-1);
+        assertThat(result.getStock()).isEqualTo(0);
     }
 }

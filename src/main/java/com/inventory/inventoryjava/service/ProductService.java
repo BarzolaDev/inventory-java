@@ -6,15 +6,17 @@ import com.inventory.inventoryjava.model.Product;
 import com.inventory.inventoryjava.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ProductService {
 
     private final ProductRepository productRepository;
 
     public Product updateStock(Long id, Integer quantity) {
-        Product product = productRepository.findById(id)
+        Product product = productRepository.findByIdWithLock(id)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
         if (product.getStock() + quantity < 0) {
