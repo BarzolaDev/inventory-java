@@ -27,9 +27,11 @@ H2 no tiene esas protecciones — perfecto para demostrar el fallo.
 - Sin lock, el stock quedó en **0** en vez de **-1**
 - Race condition demostrada en PostgreSQL real con Testcontainers ✅
 
-### Próximo paso — La defensa
-Agregar `@Transactional` + `SELECT FOR UPDATE`.
-Test verde = lock funcionando.
+### Defensa — SELECT FOR UPDATE ✅
+- `@Transactional` + `findByIdWithLock` con `PESSIMISTIC_WRITE`
+- Thread 1 agarra el lock → descuenta → stock = 0
+- Thread 2 intenta el lock → NOWAIT → explota → stock consistente
+- Test verde en PostgreSQL real ✅
 
 ## Stack
 Spring Boot · JPA · PostgreSQL · H2 · Testcontainers · Lombok · GitHub Actions
