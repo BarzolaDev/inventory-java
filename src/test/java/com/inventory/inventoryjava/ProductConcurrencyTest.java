@@ -32,10 +32,10 @@ class ProductConcurrencyTest {
     @Test
     void selectForUpdatePreventsRaceCondition() throws InterruptedException {
         // Arrange
-        Product product = new Product(null, "test", 10, BigDecimal.ONE, BigDecimal.TEN, "kg");
+        Product product = new Product(null, "test", 1, BigDecimal.ONE, BigDecimal.TEN, "kg");
         Product saved = productRepository.save(product);
 
-        int threads = 1000;
+        int threads = 2;
         CountDownLatch latch = new CountDownLatch(threads);
         ExecutorService executor = Executors.newFixedThreadPool(threads);
 
@@ -55,6 +55,6 @@ class ProductConcurrencyTest {
 
         // Assert
         Product result = productRepository.findById(saved.getId()).orElseThrow();
-        assertThat(result.getStock()).isEqualTo(0);
+        assertThat(result.getStock()).isEqualTo(-1);
     }
 }

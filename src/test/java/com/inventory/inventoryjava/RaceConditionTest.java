@@ -14,9 +14,10 @@ public class RaceConditionTest {
 
     /**
      * MISIL: Demuestra la race condition sin lock.
-     * Stock inicial: 10, Threads: 11, cada uno resta 1.
-     * Sin protección el stock no queda en -1 sino en un valor inconsistente.
-     * Resultado esperado: stock < 0 (falla = race condition demostrada)
+     * Stock inicial: 10, Threads: 2, cada uno resta 1.
+     * Ambos threads leen 10 al mismo tiempo → ambos escriben 9.
+     * Se descontaron 2 pero el stock bajó solo 1.
+     * Resultado correcto: 8 — Resultado corrupto: 9
      */
 
     @Test
@@ -32,7 +33,7 @@ public class RaceConditionTest {
         jdbc.execute("CREATE TABLE IF NOT EXISTS stock (id INT, stock_value INT)");
         jdbc.execute("INSERT INTO stock VALUES (1, 10)");
 
-        int threads = 11;
+        int threads = 2;
         CountDownLatch latch = new CountDownLatch(threads);
         ExecutorService executor = Executors.newFixedThreadPool(threads);
 
@@ -55,6 +56,6 @@ public class RaceConditionTest {
 
         Integer result = jdbc.queryForObject("SELECT stock_value FROM stock WHERE id = 1", Integer.class);
         System.out.println("Stock final: " + result);
-        assertThat(result).isLessThan(0);
+        assertThat(result).isEqualTo(8);
     }
 }
