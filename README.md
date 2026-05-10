@@ -1,29 +1,35 @@
-# Inventory Java — Concurrency & Security by Design
-Inventory API replica in Java/Spring Boot, focused on concurrency.
- 
+# Inventory Java — Concurrencia y Seguridad por Diseño
+Réplica de API de inventario en Java/Spring Boot, enfocada en concurrencia.
+
 ## Core
-- Pessimistic lock with `SELECT FOR UPDATE` to prevent race conditions
-- Concurrency tests with Testcontainers + real PostgreSQL
-- CI via GitHub Actions on every push
-## Concurrency Tests
- 
-### Missile 1 — Race condition demonstrated
-- Initial stock: 10, 2 threads subtracting 1 simultaneously
-- Without lock, stock ended at **9** instead of **8**
-- Race condition demonstrated ✅
-- 
-### Why 2 threads are enough
-A race condition only requires 2 threads competing for the same resource at the same time.
-Thread A reads stock=10, Thread B reads stock=10 before A writes — both subtract 1, both write 9. Stock should be 8.
-More threads amplify the problem in production, but 2 is the minimum to reproduce it reliably.
- 
-### Why H2 and not PostgreSQL
-PostgreSQL has implicit protections that hide race conditions in tests.
-H2 has no such protections — perfect for demonstrating the failure.
- 
-### Next — Missile 2
-Implement `SELECT FOR UPDATE` with Testcontainers + real PostgreSQL.
-Test green = defense working.
- 
+- Lock pesimista con `SELECT FOR UPDATE` para prevenir race conditions
+- Tests de concurrencia con Testcontainers + PostgreSQL real
+- CI con GitHub Actions en cada push
+
+## Tests de Concurrencia
+
+### Misil 1 — Race condition demostrada en H2
+- Stock inicial: 10, 2 threads restando 1 simultáneamente
+- Sin lock, el stock quedó en **9** en vez de **8**
+- Race condition demostrada ✅
+
+### Por qué 2 threads alcanzan
+Una race condition solo requiere 2 threads compitiendo por el mismo recurso al mismo tiempo.
+Thread A lee stock=10, Thread B lee stock=10 antes de que A escriba — ambos restan 1, ambos escriben 9. Debería ser 8.
+Más threads amplían el problema en producción, pero 2 es el mínimo para reproducirlo de forma confiable.
+
+### Por qué H2 y no PostgreSQL
+PostgreSQL tiene protecciones implícitas que ocultan race conditions en tests.
+H2 no tiene esas protecciones — perfecto para demostrar el fallo.
+
+### Misil 2 — Race condition demostrada en PostgreSQL real
+- Stock inicial: 1, 2 threads restando 1 simultáneamente
+- Sin lock, el stock quedó en **0** en vez de **-1**
+- Race condition demostrada en PostgreSQL real con Testcontainers ✅
+
+### Próximo paso — La defensa
+Agregar `@Transactional` + `SELECT FOR UPDATE`.
+Test verde = lock funcionando.
+
 ## Stack
 Spring Boot · JPA · PostgreSQL · H2 · Testcontainers · Lombok · GitHub Actions
