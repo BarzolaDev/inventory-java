@@ -32,7 +32,6 @@ H2 no tiene esas protecciones — perfecto para demostrar el fallo.
 - 1000 threads simultáneos contra PostgreSQL real con Testcontainers
 - Ningún thread leyó stock inconsistente bajo carga
 - Test verde en PostgreSQL real ✅
-- Test verde en PostgreSQL real ✅
 
 ## Stack
 Spring Boot · JPA · PostgreSQL · H2 · Testcontainers · Lombok · GitHub Actions
