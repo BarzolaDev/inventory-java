@@ -29,8 +29,9 @@ H2 no tiene esas protecciones — perfecto para demostrar el fallo.
 
 ### Defensa — SELECT FOR UPDATE ✅
 - `@Transactional` + `findByIdWithLock` con `PESSIMISTIC_WRITE`
-- Thread 1 agarra el lock → descuenta → stock = 0
-- Thread 2 intenta el lock → NOWAIT → explota → stock consistente
+- 1000 threads simultáneos contra PostgreSQL real con Testcontainers
+- Ningún thread leyó stock inconsistente bajo carga
+- Test verde en PostgreSQL real ✅
 - Test verde en PostgreSQL real ✅
 
 ## Stack
