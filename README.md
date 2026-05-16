@@ -23,3 +23,6 @@ Réplica de API de inventario en Java/Spring Boot, enfocada en demostrar y preve
 ## Stack
 
 Spring Boot · JPA · PostgreSQL · H2 · Testcontainers · Lombok · GitHub Actions
+
+pd:
+Este repo costó 2 fuentes (literalmente). 
